@@ -1,119 +1,136 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const issuerBadge = document.querySelector('[data-issuer]');
-  const statusPill = document.getElementById('status-pill');
-  const statusMessage = document.getElementById('status-message');
-  const errorCard = document.getElementById('error-card');
-  const errorMessage = document.getElementById('error-message');
-  const certificateCard = document.getElementById('certificate-card');
-  const certificateDetails = document.getElementById('certificate-details');
-  const copyLinkBtn = document.getElementById('copy-link');
-  const printButtons = [
-    document.getElementById('print-btn'),
-    document.getElementById('print-btn-secondary'),
-  ].filter(Boolean);
+const registryUrl = './data.json';
 
-  const yearEl = document.getElementById('year');
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  const lookupForm = document.getElementById('lookup-form');
+  const inputEl = document.getElementById('certificate-id');
+  const statusText = document.getElementById('status-text');
+  const recordCard = document.getElementById('record-card');
+  const errorCard = document.getElementById('error-card');
+  const errorText = document.getElementById('error-text');
+  const copyLinkBtn = document.getElementById('copy-link');
+  const printBtn = document.getElementById('print-btn');
+
+  const fieldTitle = document.getElementById('record-title');
+  const fieldCertId = document.getElementById('field-cert-id');
+  const fieldName = document.getElementById('field-name');
+  const fieldCourse = document.getElementById('field-course');
+  const fieldDate = document.getElementById('field-date');
+  const fieldIssuer = document.getElementById('field-issuer');
+
+  let registry = [];
+  let activeRecord;
+
+  lookupForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const raw = inputEl.value.trim();
+    await verifyId(raw);
+  });
 
   copyLinkBtn?.addEventListener('click', async () => {
+    if (!activeRecord) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('id', activeRecord.id || activeRecord.certificateId);
     try {
-      await navigator.clipboard.writeText(window.location.href);
-      copyLinkBtn.textContent = 'Copied!';
+      await navigator.clipboard.writeText(url.toString());
+      copyLinkBtn.textContent = 'Copied';
       setTimeout(() => {
-        copyLinkBtn.textContent = '🔗 Copy Link';
-      }, 1500);
+        copyLinkBtn.textContent = 'Copy link';
+      }, 1200);
     } catch (error) {
-      alert('Unable to copy link on this device.');
+      alert('Copy not available on this device.');
     }
   });
 
-  printButtons.forEach((btn) =>
-    btn.addEventListener('click', () => {
-      window.print();
-    }),
-  );
+  printBtn?.addEventListener('click', () => window.print());
 
-  CryptoUtils.loadConfig()
-    .then((config) => {
-      if (issuerBadge) {
-        issuerBadge.textContent = config.ISSUER;
-      }
-      attemptVerification(config);
-    })
-    .catch((error) => {
-      showError('Configuration error: ' + error.message);
-      setStatus('Configuration error', 'Fix config.json before verifying certificates.', false);
-    });
+  initFromQuery();
 
-  function attemptVerification(config) {
+  async function initFromQuery() {
     const params = new URLSearchParams(window.location.search);
-    const data = params.get('data');
+    const id = params.get('id');
+    if (id) {
+      inputEl.value = id;
+      await verifyId(id);
+    }
+  }
 
-    if (!data) {
-      setStatus(
-        'Waiting for data…',
-        'Provide a ?data= parameter or scan a QR code to begin verification.',
-        false,
-      );
+  async function loadRegistry() {
+    if (registry.length) return registry;
+    const response = await fetch(`${registryUrl}?_=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error('Unable to load registry data');
+    }
+    registry = await response.json();
+    return registry;
+  }
+
+  async function verifyId(value) {
+    hide(recordCard);
+    hide(errorCard);
+
+    if (!value) {
+      setStatus('Enter a certificate ID.');
       return;
     }
 
+    setStatus('Checking registry…');
+
     try {
-      const certificate = CryptoUtils.decodeCertificate(data, config.SECRET_KEY);
-      renderCertificate(certificate);
-      setStatus(
-        'Certificate verified',
-        `This certificate is valid and issued by ${certificate.issuer}.`,
-        true,
-      );
+      const items = await loadRegistry();
+      const match = items.find((item) => {
+        const search = value.toLowerCase();
+        return [item.id, item.certificateId]
+          .filter(Boolean)
+          .some((candidate) => candidate.trim().toLowerCase() === search);
+      });
+
+      if (match) {
+        activeRecord = match;
+        renderRecord(match);
+        setStatus('Record found.');
+      } else {
+        activeRecord = undefined;
+        showError('No matching certificate in the registry.');
+      }
     } catch (error) {
+      activeRecord = undefined;
       showError(error.message);
-      setStatus('Verification failed', 'See error details below.', false);
     }
   }
 
-  function renderCertificate(certificate) {
-    errorCard.style.display = 'none';
-    certificateCard.style.display = 'block';
+  function renderRecord(record) {
+    fieldTitle.textContent = record.fullName;
+    fieldCertId.textContent = record.certificateId || '—';
+    fieldName.textContent = record.fullName || '—';
+    fieldCourse.textContent = record.courseName || '—';
+    fieldDate.textContent = formatDate(record.completionDate);
+    fieldIssuer.textContent = record.issuer || '—';
 
-    const fields = [
-      { label: 'Certificate ID', value: certificate.certificateId },
-      { label: 'Full Name', value: certificate.fullName },
-      { label: 'Course Name', value: certificate.courseName },
-      {
-        label: 'Completion Date',
-        value: new Date(certificate.completionDate).toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }),
-      },
-      { label: 'Issuer', value: certificate.issuer },
-    ];
-
-    certificateDetails.innerHTML = fields
-      .map(
-        ({ label, value }) => `
-        <div class="certificate-field">
-          <span>${label}</span>
-          <strong>${value}</strong>
-        </div>
-      `,
-      )
-      .join('');
-  }
-
-  function setStatus(title, message, isValid) {
-    statusPill.textContent = title;
-    statusPill.className = `status-pill ${isValid ? 'status-valid' : 'status-invalid'}`;
-    statusMessage.textContent = message;
+    show(recordCard);
   }
 
   function showError(message) {
-    errorCard.style.display = 'block';
-    errorMessage.textContent = message;
-    certificateCard.style.display = 'none';
+    errorText.textContent = message;
+    show(errorCard);
+    setStatus('No record found.');
+  }
+
+  function setStatus(text) {
+    statusText.textContent = text;
+  }
+
+  function show(node) {
+    node.classList.remove('hidden');
+  }
+
+  function hide(node) {
+    node.classList.add('hidden');
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   }
 });

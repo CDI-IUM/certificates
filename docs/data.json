@@ -1,0 +1,23 @@
+[
+  {
+    "id": "Q0VSVC0yMDI1LTAwMQ==",
+    "fullName": "Jane Smith",
+    "courseName": "Digital Marketing Fundamentals",
+    "completionDate": "2024-11-20",
+    "issuer": "Centre for Digital Initiatives, The International University of Management"
+  },
+  {
+    "id": "Q0VSVC0yMDI1LTAwMg==",
+    "fullName": "Michael Johnson",
+    "courseName": "Project Management Essentials",
+    "completionDate": "2024-11-22",
+    "issuer": "Centre for Digital Initiatives, The International University of Management"
+  },
+  {
+    "id": "Q1JULU1LVy0wMDM=",
+    "fullName": "Lerato Amadhila",
+    "courseName": "Cloud Readiness Training",
+    "completionDate": "2024-12-05",
+    "issuer": "Centre for Digital Initiatives, The International University of Management"
+  }
+]
