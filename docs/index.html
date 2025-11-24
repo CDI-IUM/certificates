@@ -19,11 +19,6 @@
         <div class="col-12 col-md-8 col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
-              
-
-            
-              <div id="status-text" class="alert alert-secondary small" role="status">Waiting for URL parameter…</div>
-
               <div id="record-card" class="card mt-4 d-none">
                 <div class="card-body">
                   <h2 id="record-title" class="h5">&nbsp;</h2>
@@ -124,7 +119,7 @@
           }
 
           renderRecord(record);
-          setStatus('Certificate verified.', 'success');
+          setStatus('Certificate.', 'success');
         } catch (error) {
           showError(error.message);
         }
