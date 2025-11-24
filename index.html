@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Certificate Verification Suite</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header>
+    <div class="layout-container">
+      <p class="badge badge-success">Static · Secure · Offline Friendly</p>
+      <h1>Certificate Verification Suite</h1>
+      <p class="helper-text">Generate encrypted certificates, embed QR codes, and verify completions without relying on databases.</p>
+      <div class="print-actions">
+        <a class="btn" href="./verify.html">Open Verifier</a>
+        <a class="btn btn-secondary" href="./generate.html">Open Generator</a>
+        <a class="btn btn-tertiary" href="./cert_verification.md" target="_blank" rel="noreferrer">Developer Spec</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="layout-container">
+      <div class="card">
+        <h2>How It Works</h2>
+        <div class="grid-two">
+          <article>
+            <h3>1. Create Certificates</h3>
+            <p>Use the generator to collect participant data, encrypt it with your secret key, and render a QR code that encodes a verification URL.</p>
+          </article>
+          <article>
+            <h3>2. Share or Print</h3>
+            <p>Download the QR code PNG or share the verification link. Each QR code embeds the encrypted payload.</p>
+          </article>
+          <article>
+            <h3>3. Verify Instantly</h3>
+            <p>The static verification page decodes, decrypts, and validates the payload locally in the browser—no servers required.</p>
+          </article>
+          <article>
+            <h3>4. Audit Anytime</h3>
+            <p>Recipients can validate authenticity even offline thanks to client-side cryptography and cached assets.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Feature Highlights</h2>
+        <ul>
+          <li>Base64 + XOR encrypted payloads secured by configurable secret key.</li>
+          <li>Responsive verification UI with print mode and accessibility guardrails.</li>
+          <li>Generator workflow with validation, copy-to-clipboard, QR preview, and PNG export.</li>
+          <li>Batch CSV uploads with automated ID assignment and zipped QR downloads.</li>
+          <li>Zero back-end dependencies—perfect for GitHub Pages deployments.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Getting Started Checklist</h2>
+        <ol>
+          <li>Update <code>config.json</code> with your real <strong>SECRET_KEY</strong> and organization metadata.</li>
+          <li>Deploy this folder to GitHub Pages (or any static host).</li>
+          <li>Visit <code>generate.html</code> to create certificates and QR codes.</li>
+          <li>Distribute generated certificates or embed QR codes in your PDF templates.</li>
+          <li>Share <code>verify.html</code> link so learners can validate their achievement.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Certificate Verification Suite</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
