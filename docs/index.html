@@ -69,6 +69,113 @@
     </div>
   </main>
 
-  <script type="module" src="./verify.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const statusText = document.getElementById('status-text');
+      const recordCard = document.getElementById('record-card');
+      const errorCard = document.getElementById('error-card');
+      const errorText = document.getElementById('error-text');
+      const copyLinkBtn = document.getElementById('copy-link');
+      const printBtn = document.getElementById('print-btn');
+
+      const titleEl = document.getElementById('record-title');
+      const certIdEl = document.getElementById('field-cert-id');
+      const nameEl = document.getElementById('field-name');
+      const courseEl = document.getElementById('field-course');
+      const dateEl = document.getElementById('field-date');
+      const issuerEl = document.getElementById('field-issuer');
+
+      const params = new URLSearchParams(window.location.search);
+      const certificateId = params.get('id');
+
+      if (!certificateId) {
+        setStatus('No certificate ID supplied. Append ?id=XYZ to the URL.', 'danger');
+        return;
+      }
+
+      verifyId(certificateId.trim());
+
+      copyLinkBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          copyLinkBtn.textContent = 'Copied';
+          setTimeout(() => (copyLinkBtn.textContent = 'Copy link'), 1500);
+        } catch (error) {
+          alert('Clipboard not available.');
+        }
+      });
+
+      printBtn.addEventListener('click', () => window.print());
+
+      async function verifyId(value) {
+        hide(recordCard);
+        hide(errorCard);
+        setStatus('Looking up certificate…', 'secondary');
+
+        try {
+          const response = await fetch(`./data.json?_=${Date.now()}`, { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error('Unable to load registry.');
+          }
+
+          const registry = await response.json();
+          const normalized = value.toLowerCase();
+          const record = registry.find((entry) =>
+            [entry.id, entry.certificateId]
+              .filter(Boolean)
+              .some((candidate) => candidate.trim().toLowerCase() === normalized),
+          );
+
+          if (!record) {
+            showError('No certificate matches the supplied ID.');
+            return;
+          }
+
+          renderRecord(record);
+          setStatus('Certificate verified.', 'success');
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      function renderRecord(record) {
+        titleEl.textContent = record.fullName || 'Certificate';
+        certIdEl.textContent = record.certificateId || record.id || '—';
+        nameEl.textContent = record.fullName || '—';
+        courseEl.textContent = record.courseName || '—';
+        dateEl.textContent = formatDate(record.completionDate);
+        issuerEl.textContent = record.issuer || '—';
+        show(recordCard);
+      }
+
+      function showError(message) {
+        errorText.textContent = message;
+        show(errorCard);
+        setStatus('Verification failed.', 'danger');
+      }
+
+      function setStatus(message, type) {
+        statusText.textContent = message;
+        statusText.className = `alert alert-${type} small`;
+      }
+
+      function show(element) {
+        element.classList.remove('d-none');
+      }
+
+      function hide(element) {
+        element.classList.add('d-none');
+      }
+
+      function formatDate(value) {
+        if (!value) return '—';
+        const parsed = new Date(value);
+        if (Number.isNaN(parsed.getTime())) {
+          return value;
+        }
+        return parsed.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+    });
+  </script>
 </body>
 </html>
