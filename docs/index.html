@@ -82,7 +82,7 @@
 
       verifyId(certificateId.trim());
 
-      copyLinkBtn.addEventListener('click', async () => {
+      copyLinkBtn?.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
           copyLinkBtn.textContent = 'Copied';
@@ -92,7 +92,7 @@
         }
       });
 
-      printBtn.addEventListener('click', () => window.print());
+      printBtn?.addEventListener('click', () => window.print());
 
       async function verifyId(value) {
         hide(recordCard);
@@ -126,12 +126,12 @@
       }
 
       function renderRecord(record) {
-        titleEl.textContent = record.fullName || 'Certificate';
-        certIdEl.textContent = record.certificateId || record.id || '—';
-        nameEl.textContent = record.fullName || '—';
-        courseEl.textContent = record.courseName || '—';
-        dateEl.textContent = formatDate(record.completionDate);
-        issuerEl.textContent = record.issuer || '—';
+        setText(titleEl, record.fullName || 'Certificate');
+        setText(certIdEl, record.certificateId || record.id || '—');
+        setText(nameEl, record.fullName || '—');
+        setText(courseEl, record.courseName || '—');
+        setText(dateEl, formatDate(record.completionDate));
+        setText(issuerEl, record.issuer || '—');
         show(recordCard);
       }
 
@@ -161,6 +161,12 @@
           return value;
         }
         return parsed.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function setText(element, text) {
+        if (element) {
+          element.textContent = text;
+        }
       }
     });
   </script>
