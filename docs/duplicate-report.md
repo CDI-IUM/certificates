@@ -4,12 +4,12 @@ Generated from docs/data.json
 
 * Total entries: **347**
 * Duplicate IDs: **0**
-* Duplicate names: **12**
+* Missing names: **12**
 
 ## Duplicate IDs
 _No duplicate IDs remain._
 
-## Duplicate Names
+## Missing Names
 Name | Indexes | IDs | Course | Completion Date
 | --- | --- | --- | --- | --- |
 DANIEL SHANGELAO NDEULITA | 26, 249 | `b892201b-c482-4c05-b374-023d417bbe1c`, `df75fb85-03cc-46ca-904d-e388f5bc054c` | Digital Health Essentials | 2025-11-07
