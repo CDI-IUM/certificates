@@ -413,13 +413,6 @@
     "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
   },
   {
-    "id": "8bc137b0-6d78-4dcc-8bb4-4ca2d3d5be4b",
-    "fullName": "JULIAN FRANS",
-    "courseName": "Digital Health Essentials",
-    "completionDate": "2025-11-07",
-    "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
-  },
-  {
     "id": "5c3624f7-4928-4df2-9b2b-ef2a2454f02f",
     "fullName": "JULIAN FRANS",
     "courseName": "Digital Health Essentials",
@@ -2431,6 +2424,13 @@
   {
     "id": "5be8e684-faf6-4b21-8673-9940ce4af1c6",
     "fullName": "Beatrice Macho Mukisi",
+    "courseName": "Digital Health Essentials",
+    "completionDate": "2025-11-07",
+    "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
+  },
+  {
+    "id": "eb1edf00-e224-4461-bc7a-8288b47cf731",
+    "fullName": "Ndeshimona Ndahepuluka Helina Hamukwaya",
     "courseName": "Digital Health Essentials",
     "completionDate": "2025-11-07",
     "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
