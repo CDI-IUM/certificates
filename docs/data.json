@@ -2444,7 +2444,14 @@
   },
   {
     "id": "24d43120-2b2a-46cd-af59-58d53a98512d",
-    "fullName": "David Iyaloo Omwaetuna Andreas",
+    "fullName": "David Iyaloo Omwaetuna Andreas ",
+    "courseName": "Digital Health Essentials",
+    "completionDate": "2025-11-07",
+    "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
+  },
+  {
+    "id": "5d4d35e5-67cf-40dd-8de8-2bcad14de330",
+    "fullName": "Saara Nalimanguluke Nangombe Andreki",
     "courseName": "Digital Health Essentials",
     "completionDate": "2025-11-07",
     "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
