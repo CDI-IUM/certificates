@@ -2462,5 +2462,54 @@
     "courseName": "Digital Health Essentials",
     "completionDate": "2025-11-07",
     "issuer": "The International University of Management in collaboration with MEDITECH South Africa"
+  },
+  {
+    "id": "b26bbe00-b157-4275-98c4-6e07e535a5b6",
+    "fullName": "Lorenz Hembapu",
+    "courseName": "ODK Hackathon",
+    "completionDate": "2026-05-27",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "9db5b401-161f-47f3-ab2b-eacee0497c93",
+    "fullName": "Aina Nangolo",
+    "courseName": "ODK Hackathon",
+    "completionDate": "2026-05-27",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "5b2cdb45-2a54-433f-b063-200fe075a47b",
+    "fullName": "Martin Shaalukeni",
+    "courseName": "ODK Hackathon",
+    "completionDate": "2026-05-27",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "dcc78788-ff4b-4cb2-a927-459fd5172149",
+    "fullName": "Ntombizodwa Nyoni",
+    "courseName": "ODK Hackathon",
+    "completionDate": "2026-05-27",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "cb70a98d-0325-4541-8956-a2cf96aebbd2",
+    "fullName": "Elias Likoko Samende",
+    "courseName": "Data Wrangling Hackathon",
+    "completionDate": "2026-04-25",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "1c6b9718-87c7-4332-a6c9-f0eb110aafcc",
+    "fullName": "Violet Mbundu",
+    "courseName": "Data Wrangling Hackathon",
+    "completionDate": "2026-04-25",
+    "issuer": "Centre for Digital Initiatives"
+  },
+  {
+    "id": "5c588099-7064-4a84-a77e-b62ae37cd186",
+    "fullName": "Pomwene Nekundi",
+    "courseName": "Data Wrangling Hackathon",
+    "completionDate": "2026-04-25",
+    "issuer": "Centre for Digital Initiatives"
   }
 ]
